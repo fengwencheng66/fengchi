@@ -33,7 +33,7 @@ Teaching
 ===================
 .. toctree::
    :maxdepth: 2
-   :caption: 目录
+   :caption: contents:
 
 
    teaching/index
