@@ -37,3 +37,5 @@ Teaching
 
 
    teaching/index
+
+   research/index
