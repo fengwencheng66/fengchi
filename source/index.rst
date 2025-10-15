@@ -33,7 +33,7 @@ Teaching and Research
 ===================
 .. toctree::
    :maxdepth: 2
-   :caption: Teaching and Research
+   :caption: 
 
 
    teaching/index
@@ -41,3 +41,5 @@ Teaching and Research
    research/index
 
    Maps-main/index
+
+   Maps-main/layers_demo
