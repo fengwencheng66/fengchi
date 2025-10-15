@@ -33,7 +33,7 @@ Teaching and Research
 ===================
 .. toctree::
    :maxdepth: 2
-   :caption: 
+   :caption: contents:
 
 
    teaching/index
