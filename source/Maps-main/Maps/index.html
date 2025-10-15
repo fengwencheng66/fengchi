@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeoReferenced Map Viewer</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #opacityControl {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.9);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div id="opacityControl">
+    Overlay opacity:
+    <input type="range" id="opacitySlider" min="0" max="1" value="0.7" step="0.05">
+  </div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // 初始化地图（使用OpenStreetMap地形图）
+    const map = L.map('map', {
+      center: [34.5, 108.9], // 大约在中国中部
+      zoom: 5
+    });
+
+    // 地形底图（OSM 无省市标签）
+    L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png', {
+      maxZoom: 17,
+      attribution: '&copy; <a href="https://opentopomap.org/">OpenTopoMap</a>'
+    }).addTo(map);
+
+    // 叠加PNG（带pgw地理配准）
+    const overlay = L.imageOverlay('EN-LateSpringAutumn_modified.png', [[17.6, 97.3], [43.5, 123.5]], {opacity: 0.7});
+    overlay.addTo(map);
+
+    // 透明度控制
+    document.getElementById('opacitySlider').addEventListener('input', e => {
+      overlay.setOpacity(e.target.value);
+    });
+  </script>
+</body>
+</html>

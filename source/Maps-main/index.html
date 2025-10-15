@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>East Asia Overlays — Shaded Relief</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  <style>
+    html, body, #map { height: 100%; margin: 0; }
+
+    /* 右上角控制面板 */
+    #panel {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      z-index: 9999;
+      width: 320px;
+      max-width: calc(100vw - 24px);
+      background: rgba(255,255,255,.95);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      box-shadow: 0 2px 14px rgba(0,0,0,.18);
+    }
+    #panel h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .layer-row {
+      border-top: 1px solid #eee;
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+    .row-head {
+      display:flex; align-items:center; gap:8px;
+      margin-bottom:6px;
+    }
+    .row-head .swatch {
+      width:10px; height:10px; border-radius:2px; display:inline-block;
+    }
+    .row-head label { font-weight: 600; cursor: pointer; }
+    .opacity-row {
+      display:flex; align-items:center; gap:8px;
+    }
+    .opacity-row input[type="range"] { flex: 1; }
+    #toast {
+      position: absolute; left: 12px; bottom: 12px; z-index: 9999;
+      background: rgba(0,0,0,.76);
+      color: #fff; padding: 8px 12px; border-radius: 8px;
+      font-size: 13px; max-width: 520px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="panel">
+    <h3>Overlays</h3>
+    <div id="layersUI"></div>
+  </div>
+
+  <div id="toast">完成加载。若未见叠加图，请缩放一次或稍等网络响应。</div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // ------------------ 初始化地图：Esri World Shaded Relief（强地形晕渲） ------------------
+    const map = L.map('map', {
+      center: [34.5, 108.9],
+      zoom: 5,
+      zoomControl: true
+    });
+
+    // 底图：Shaded Relief（彩色地形、无标签）
+    const relief = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 18, attribution: '&copy; Esri | World Shaded Relief' }
+    ).addTo(map);
+
+    // （可选）非常淡的灰底线框（便于识别海岸线/边界）
+    const grayBase = L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom: 19, opacity: 0.00, attribution: '&copy; Esri | Light Gray Base' }
+    ).addTo(map);
+
+    // ------------------ 叠加图配置（PNG + WLD） ------------------
+    const overlaysConfig = [
+      {
+        id: 'spring',
+        name: 'Late Spring & Autumn',
+        png:  'EN-LateSpringAutumn_modified.png',
+        wld:  'EN-LateSpringAutumn_modified.wld',
+        color:'#e74c3c',
+        defaultOpacity: 0.80,
+        checked: true
+      },
+      {
+        id: 'western',
+        name: 'Western Zhou States',
+        png:  'EN-WesternZhouStates_modified.png',
+        wld:  'EN-WesternZhouStates_modified.wld',
+        color:'#27ae60',
+        defaultOpacity: 0.75,
+        checked: false
+      },
+      {
+        id: 'warring',
+        name: 'Warring States (260 BCE)',
+        png:  'EN-WarringStatesAll260BCE_modified.png',
+        wld:  'EN-WarringStatesAll260BCE_modified.wld',
+        color:'#2980b9',
+        defaultOpacity: 0.75,
+        checked: false
+      }
+    ];
+
+    // 存储每个 overlay 的 Leaflet 实例与边框
+    const overlayRefs = new Map();
+    let unionBounds = null; // 所有已加载图层的合并范围
+
+    // ----------- 工具函数：读取 wld（以 arrayBuffer 强制文本解码，兼容 GitHub Pages） -----------
+    async function readText(url) {
+      const r = await fetch(url + '?v=' + Date.now());
+      if (!r.ok) throw new Error(`Fetch ${url} failed: ${r.status}`);
+      const buf = await r.arrayBuffer();
+      return new TextDecoder('utf-8').decode(buf);
+    }
+    function parseWorldFile(text) {
+      // world file: A, B, D, E, C, F（6 行）
+      const nums = text.trim().split(/[\r\n]+/).map(s => parseFloat(s));
+      if (nums.length !== 6 || nums.some(n => Number.isNaN(n))) {
+        throw new Error('wld 解析失败：需要 6 行数字');
+      }
+      const [A, B, D, E, C, F] = nums;
+      return { A, B, D, E, C, F };
+    }
+    function loadImageSize(url) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+        img.onerror = () => reject(new Error('PNG 加载失败: ' + url));
+        img.src = url + '?v=' + Date.now();
+      });
+    }
+
+    // ----------- 根据 PNG + WLD 放置叠加 -----------
+    async function addOverlay(cfg) {
+      try {
+        const wldText = await readText(cfg.wld);
+        const { A, B, D, E, C, F } = parseWorldFile(wldText);
+
+        const { width: W, height: H } = await loadImageSize(cfg.png);
+
+        // 3857 平面坐标四角
+        const corners3857 = [
+          [C + A*0 + B*0, F + D*0 + E*0],       // 左上
+          [C + A*W + B*0, F + D*W + E*0],       // 右上
+          [C + A*W + B*H, F + D*W + E*H],       // 右下
+          [C + A*0 + B*H, F + D*0 + E*H]        // 左下
+        ];
+        // 转成经纬度
+        const cornersLatLng = corners3857.map(([x,y]) =>
+          L.CRS.EPSG3857.unproject(L.point(x, y))
+        );
+        const bounds = L.latLngBounds(cornersLatLng);
+
+        const overlay = L.imageOverlay(cfg.png, bounds, {
+          opacity: cfg.defaultOpacity,
+          interactive: false
+        });
+        if (cfg.checked) overlay.addTo(map);
+
+        // 叠加边框（用于定位/校验）
+        const border = L.polyline([...cornersLatLng, cornersLatLng[0]], {
+          color: cfg.color, weight: 2, opacity: 0.85
+        });
+        if (cfg.checked) border.addTo(map);
+
+        overlayRefs.set(cfg.id, { overlay, border, bounds });
+
+        // 合并范围
+        unionBounds = unionBounds ? unionBounds.extend(bounds) : bounds.clone();
+        if (unionBounds) map.fitBounds(unionBounds.pad(0.05));
+
+      } catch (err) {
+        console.error(err);
+        alert(`叠加失败 [${cfg.name}]: ${err.message}`);
+      }
+    }
+
+    // ----------- UI：每层一个勾选 + 滑块 -----------
+    function buildUI() {
+      const box = document.getElementById('layersUI');
+      overlaysConfig.forEach(cfg => {
+        const row = document.createElement('div');
+        row.className = 'layer-row';
+
+        const head = document.createElement('div');
+        head.className = 'row-head';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `chk-${cfg.id}`;
+        checkbox.checked = !!cfg.checked;
+
+        const swatch = document.createElement('span');
+        swatch.className = 'swatch';
+        swatch.style.background = cfg.color;
+
+        const label = document.createElement('label');
+        label.setAttribute('for', checkbox.id);
+        label.textContent = cfg.name;
+
+        head.appendChild(checkbox);
+        head.appendChild(swatch);
+        head.appendChild(label);
+
+        const opRow = document.createElement('div');
+        opRow.className = 'opacity-row';
+
+        const small = document.createElement('span');
+        small.textContent = 'Opacity';
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = '0'; slider.max = '1'; slider.step = '0.05';
+        slider.value = cfg.defaultOpacity;
+        slider.id = `rng-${cfg.id}`;
+
+        opRow.appendChild(small);
+        opRow.appendChild(slider);
+
+        row.appendChild(head);
+        row.appendChild(opRow);
+        box.appendChild(row);
+
+        // 行为：勾选显示/隐藏
+        checkbox.addEventListener('change', () => {
+          const ref = overlayRefs.get(cfg.id);
+          if (!ref) return;
+          if (checkbox.checked) {
+            ref.overlay.addTo(map);
+            ref.border.addTo(map);
+          } else {
+            map.removeLayer(ref.overlay);
+            map.removeLayer(ref.border);
+          }
+        });
+
+        // 行为：透明度
+        slider.addEventListener('input', () => {
+          const ref = overlayRefs.get(cfg.id);
+          if (ref) ref.overlay.setOpacity(parseFloat(slider.value));
+        });
+      });
+    }
+
+    // 构建 UI 并批量加载
+    buildUI();
+    (async () => {
+      for (const cfg of overlaysConfig) await addOverlay(cfg);
+      // 移除提示
+      setTimeout(() => { const t = document.getElementById('toast'); if (t) t.remove(); }, 3000);
+    })();
+  </script>
+</body>
+</html>
+
