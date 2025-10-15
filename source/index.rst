@@ -29,11 +29,11 @@ Research Interest
 My research covers a wide range of Chinese literature and thought before the 2nd century CE. I am particularly interested in how early Chinese people “make” musical instruments by writing about them. The materials I work with include early songs, narratives, philosophical treatise, ritual accounts, and music theory, which are presented in various forms, as well as early musical instruments and artifacts. 
 
 
-
+Teaching and Research
 ===================
 .. toctree::
    :maxdepth: 2
-   :caption: 
+   :caption: Teaching and Research
 
 
    teaching/index
