@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>杂七杂八呓语 &mdash; Chi Feng  documentation</title>
+  <title>图层叠加演示 &mdash; Chi Feng  documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/mycss.css?v=5c198ccb" />
@@ -49,7 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">杂七杂八呓语</a></li>
+<li><a class="reference internal" href="#">图层叠加演示</a></li>
 </ul>
 </div>
         </div>
@@ -66,9 +66,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">杂七杂八呓语</li>
+      <li class="breadcrumb-item active">图层叠加演示</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/various/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/Maps-main/layers_demo.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -77,8 +77,29 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>杂七杂八呓语<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
+<h1>图层叠加演示<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<div class="layer-controls">
+    <label><input type="checkbox" class="layer-checkbox" checked> 背景层</label>
+    <label><input type="checkbox" class="layer-checkbox" checked> 建筑层</label>
+    <label><input type="checkbox" class="layer-checkbox" checked> 道路层</label>
+    <label><input type="checkbox" class="layer-checkbox" checked> 文字标注层</label>
+</div>
+
+<div class="layers-container">
+    <!-- 图层按照从下到上的顺序排列 -->
+    <div class="layer">
+        <img src="_static/images/background.jpg" alt="背景图层">
+    </div>
+    <div class="layer">
+        <img src="_static/images/buildings.jpg" alt="建筑图层">
+    </div>
+    <div class="layer">
+        <img src="_static/images/roads.jpg" alt="道路图层">
+    </div>
+    <div class="layer">
+        <img src="_static/images/labels.png" alt="文字标注图层">
+    </div>
+</div><div class="toctree-wrapper compound">
 </div>
 </section>
 
