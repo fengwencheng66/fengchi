@@ -12,7 +12,7 @@ Chi Feng
 
 Graduate Student
 
-Chi Feng
+Chi Feng (馮馳)
 
 Email: fengchi@iu.edu
 
@@ -25,7 +25,7 @@ Major: Chinese Ph.D.
 Bio
 ---------
 
-I am a Ph.D. candidate at the Indiana University, Bloomington. IMy research covers a wide range of early Chinese literature and thought, and I am particularly interested how people “make” musical instruments by writing about them.
+I am a Ph.D. candidate at the Indiana University, Bloomington. My research covers a wide range of early Chinese literature and thought, and I am particularly interested how people “make” musical instruments by writing about them. The material I use include early songs, narratives, philosophical treatise, ritual accounts, and music theory, which are written in various forms, as well as early musical instruments themselves. Before coming to IU, I got my bachelor’s degree in philosophy from Tongji University, Shanghai (2019), and master’s degrees in Chinese (2022) and in Religious Studies (2022) from the University of Colorado, Boulder. I am also a part-time musician. I am actively engaged in music performance, and I enjoy studying classical music around the world.
 
 I am on the 2026-27 job market and will present my job market paper at the following conferences:
 
@@ -34,10 +34,6 @@ XXXXXX
 YYYYYY
 
 ZZZZZZ
-
-I am Chi Feng 馮馳, a graduate student in the PhD program in Chinese. My research covers a wide range of early Chinese literature and thought, and I am particularly interested how people “make” musical instruments by writing about them. The material I use include early songs, narratives, philosophical treatise, ritual accounts, and music theory, which are written in various forms, as well as early musical instruments themselves. Before coming to IU, I got my bachelor’s degree in philosophy from Tongji University, Shanghai (2019), and master’s degrees in Chinese (2022) and in Religious Studies (2022) from the University of Colorado, Boulder. I am also a part-time musician. I am actively engaged in music performance, and I enjoy studying classical music around the world. Swimming is also among my favorites!
-
-
 
 
 
