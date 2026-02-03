@@ -10,7 +10,7 @@ Chi Feng  (馮馳)
    :maxdepth: 2
    :caption: 目录
 
-Ph.D. candidate at the Indiana University
+Ph.D. candidate at the Indiana University, Bloomington.
 
 Email: fengchi@iu.edu
 
@@ -61,7 +61,7 @@ Teaching and Research
 ---------------------------
 .. toctree::
    :maxdepth: 2
-   :caption: contents:
+   :caption: 教学与研究:
 
 
    teaching/index
