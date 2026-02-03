@@ -1,3 +1,5 @@
 # This is a test page
 
-这是一个测试页
+.. image:: figures/poster-20260208.jpg
+   :alt: 冯驰-香港会议海报2026
+
