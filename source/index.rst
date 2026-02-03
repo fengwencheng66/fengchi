@@ -20,11 +20,11 @@ Email: fengchi@iu.edu
 Bio
 ---------
 
-I am a Ph.D. candidate at the Indiana University, Bloomington. My research covers a wide range of early Chinese literature and thought, Chi Feng 馮馳 is a PhD candidate in Chinese. Her research covers a wide range of early Chinese literature and thought, and she is particularly interested in materials related to music and cultural history. She began writing her dissertation in Spring 2026, and it will explore how people in early China imagined, described, and theorized musical instruments. She works with both musical artifacts and textual sources such as myths of origins, ritual guidelines, theories of musical philosophy, descriptions of performance contexts, and treatises on production technologies.
+I am a Ph.D. candidate at the Indiana University, Bloomington. My research covers a wide range of early Chinese literature and thought, and particularly in materials related to music and cultural history. I began writing my dissertation in Spring 2026, and it will explore how people in early China imagined, described, and theorized musical instruments. I works with both musical artifacts and textual sources such as myths of origins, ritual guidelines, theories of musical philosophy, descriptions of performance contexts, and treatises on production technologies.
 
-Beyond research, she is also a guqin practitioner and a keyboard player. She plays the piano, and she is currently learning the organ and the carillon. In addition, she received a PhD minor in Music Theory at the Jacobs School of Music. As a teacher, she runs a course with the title "Music and Society in Early China" under both EALC and Music.
+Beyond research, I am also a guqin practitioner and a keyboard player. I plays the piano, and am  currently learning the organ and the carillon. In addition, I received a PhD minor in Music Theory at the Jacobs School of Music. As a teacher, I runs a course with the title "Music and Society in Early China" under both EALC and Music.
 
-Before coming to IU, Chi got her bachelor's degree in philosophy from Tongji University (2019), and master's degrees in Chinese (2022) and in Religious Studies (2022) from the University of Colorado, Boulder.
+Before coming to IU, I got bachelor's degree in philosophy from Tongji University (2019), and master's degrees in Chinese (2022) and in Religious Studies (2022) from the University of Colorado, Boulder.
 
 Education
 ---------------------------
