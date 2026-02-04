@@ -1,5 +1,5 @@
-this is a test page.
--------------------------
+MUS - Z320 Advanced Special Topics - Music and Society in Early China
+---------------------------------------------------------------------------
 
 
 .. image:: figures/mus_z320.jpg
